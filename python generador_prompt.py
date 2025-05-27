@@ -4,7 +4,11 @@ import random
 # Importar las preguntas y opciones desde el módulo externo
 from questions import (
     app_types, audiences, platforms, ides, languages, gui_choices, gui_toolkits,
-    databases, authentications, deployments, structure_options, startup_options_list, predefined_features
+    databases, authentications, deployments, structure_options, startup_options_list, predefined_features,
+    main_goal_options, lifecycle_options, frameworks_options, target_audience_options, devices_options,
+    security_level_options, auth_methods_options, update_method_options, documentation_options,
+    external_integration_options, testing_options, version_control_options, ci_cd_options,
+    languages_supported_options, accessibility_options
 )
 
 def ask(question, options=None, allow_custom=False, explanation=None, icon=None, multi_select=False):
@@ -77,6 +81,7 @@ def collect_project_info():
         data['deployment'] = random.choice(deployments)
         data['structure'] = random.choice(structure_options)
         data['startup_options'] = random.sample(startup_options_list, k=random.randint(2, 6))
+        # Usar la importación global de predefined_features
         features_pool = [f["name"] for f in predefined_features]
         data['features'] = random.sample(features_pool, k=random.randint(10, min(40, len(features_pool))))
         data['extra_files'] = {
@@ -88,22 +93,104 @@ def collect_project_info():
     data['project_name'] = ask("¿Cómo se llama tu proyecto?", icon="📛")
     data['description'] = ask("Describe brevemente qué hace la app.", icon="📝")
 
+    data['main_goal'] = ask("¿Cuál es el objetivo principal del proyecto?", main_goal_options, allow_custom=True, icon="🎯")
+    data['lifecycle'] = ask("¿Cuál es el ciclo de vida esperado del proyecto?", lifecycle_options, allow_custom=True, icon="📆")
+    data['app_type'] = ask("¿Qué tipo de aplicación es?", app_types, allow_custom=True, icon="🗂️")
+    data['frameworks'] = ask("¿Qué frameworks principales planeas usar?", frameworks_options, allow_custom=True, icon="🧩")
+    data['target_audience'] = ask("¿Quién es el público objetivo?", target_audience_options, allow_custom=True, icon="🎯")
+    data['devices'] = ask("¿Qué dispositivos principales usarán la app?", devices_options, allow_custom=True, icon="📱")
+    data['security_level'] = ask("¿Qué nivel de seguridad requiere tu app?", security_level_options, allow_custom=True, icon="🛡️")
+    data['auth_methods'] = ask("¿Qué métodos de autenticación adicionales deseas?", auth_methods_options, allow_custom=True, icon="🔑")
+    data['update_method'] = ask("¿Qué métodos de actualización tendrá la app?", update_method_options, allow_custom=True, icon="⬆️")
+    data['documentation'] = ask("¿Qué tipo de soporte y documentación deseas?", documentation_options, allow_custom=True, icon="📖")
+    data['external_integration'] = ask("¿Qué integración externa es prioritaria?", external_integration_options, allow_custom=True, icon="🔌")
+    data['testing'] = ask("¿Qué tipo de pruebas deseas implementar?", testing_options, allow_custom=True, icon="🧪")
+    data['version_control'] = ask("¿Qué tipo de control de versiones usarás?", version_control_options, allow_custom=True, icon="🗂️")
+    data['ci_cd'] = ask("¿Qué tipo de despliegue continuo deseas?", ci_cd_options, allow_custom=True, icon="🚀")
+    data['languages_supported'] = ask("¿Qué idiomas debe soportar la app?", languages_supported_options, allow_custom=True, icon="🌐")
+    data['accessibility'] = ask("¿Qué nivel de accesibilidad necesitas?", accessibility_options, allow_custom=True, icon="♿")
+
+    # Ampliar opciones de tipo de aplicación
     data['app_type'] = ask("¿Qué tipo de aplicación es?", [
         {"name": "Web", "icon": "🌐"},
         {"name": "Escritorio", "icon": "🖥️"},
         {"name": "Móvil", "icon": "📱"},
         {"name": "API/Backend", "icon": "🔗"},
         {"name": "CLI", "icon": "💻"},
+        {"name": "Microservicio", "icon": "☁️"},
+        {"name": "IoT", "icon": "📡"},
+        {"name": "Juego", "icon": "🎲"},
+        {"name": "Data Science", "icon": "📊"},
+        {"name": "Automatización", "icon": "🤖"},
+        {"name": "Aplicación híbrida", "icon": "🔀"},
+        {"name": "Aplicación embebida", "icon": "📦"},
+        {"name": "Simulador", "icon": "🧪"},
+        {"name": "Realidad virtual", "icon": "🕶️"},
+        {"name": "Realidad aumentada", "icon": "🌐"},
+        {"name": "Aplicación científica", "icon": "🔬"},
+        {"name": "Aplicación financiera", "icon": "💹"},
         {"name": "Otro", "icon": "❓"}
     ], allow_custom=True, icon="🗂️")
+
+    # Nueva pregunta: ¿Qué frameworks principales planeas usar?
+    data['frameworks'] = ask(
+        "¿Qué frameworks principales planeas usar?",
+        [
+            {"name": "Django", "icon": "🌱"},
+            {"name": "Flask", "icon": "🍶"},
+            {"name": "FastAPI", "icon": "⚡"},
+            {"name": "React", "icon": "⚛️"},
+            {"name": "Angular", "icon": "🅰️"},
+            {"name": "Vue.js", "icon": "🟩"},
+            {"name": "Spring Boot", "icon": "🌼"},
+            {"name": "Express", "icon": "🚂"},
+            {"name": "Flutter", "icon": "💙"},
+            {"name": "Qt", "icon": "🟩"},
+            {"name": "Laravel", "icon": "🌺"},
+            {"name": "Ruby on Rails", "icon": "💎"},
+            {"name": "Svelte", "icon": "🔥"},
+            {"name": "Next.js", "icon": "⏭️"},
+            {"name": "NestJS", "icon": "🪺"},
+            {"name": "Otro", "icon": "❓"}
+        ],
+        allow_custom=True,
+        icon="🧩"
+    )
 
     data['target_audience'] = ask("¿Quién es el público objetivo?", [
         {"name": "Usuarios finales", "icon": "👤"},
         {"name": "Empresas", "icon": "🏢"},
         {"name": "Desarrolladores", "icon": "👨‍💻"},
         {"name": "Educativo", "icon": "🎓"},
+        {"name": "Administración pública", "icon": "🏛️"},
+        {"name": "Niños", "icon": "🧒"},
+        {"name": "Personas mayores", "icon": "👴"},
+        {"name": "Personas con discapacidad", "icon": "♿"},
+        {"name": "Investigadores", "icon": "🔬"},
+        {"name": "Freelancers", "icon": "🧑‍💻"},
+        {"name": "ONGs", "icon": "🤝"},
+        {"name": "Startups", "icon": "🚀"},
+        {"name": "Equipos remotos", "icon": "🌎"},
         {"name": "Otro", "icon": "❓"}
     ], allow_custom=True, icon="🎯")
+
+    # Nueva pregunta: ¿Qué dispositivos principales usarán la app?
+    data['devices'] = ask(
+        "¿Qué dispositivos principales usarán la app?",
+        [
+            {"name": "PC de escritorio", "icon": "🖥️"},
+            {"name": "Portátiles", "icon": "💻"},
+            {"name": "Tablets", "icon": "📱"},
+            {"name": "Smartphones", "icon": "📱"},
+            {"name": "Smart TV", "icon": "📺"},
+            {"name": "Dispositivos IoT", "icon": "📡"},
+            {"name": "Wearables", "icon": "⌚"},
+            {"name": "Consolas", "icon": "🎮"},
+            {"name": "Otro", "icon": "❓"}
+        ],
+        allow_custom=True,
+        icon="📱"
+    )
 
     data['platform'] = ask("¿En qué plataforma funcionará?", [
         {"name": "Windows", "icon": "🪟"},
@@ -333,6 +420,8 @@ def collect_project_info():
         {"name": "Otro", "icon": "➕"}
     ]
 
+    # Elimina la definición local de predefined_features y el bloque de selección de características,
+    # ya que predefined_features ya está importado y usado en el bloque siguiente.
     print("\n🔧 Selecciona las características principales de tu app:")
     selected_features = ask(
         "Elige de la lista (puedes seleccionar varios):",
